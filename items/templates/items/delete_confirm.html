@@ -1,70 +1,199 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Delete Item | UniFind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
 
+:root{
+    --ink:#12192b;
+    --ink-soft:#5a6478;
+    --paper:#eef1f6;
+    --surface:#ffffff;
+    --line:#d7dee8;
+    --amber:#f2a93b;
+    --lost:#c9445a;
+    --radius:16px;
+}
+
+*{box-sizing:border-box;}
+
 body{
-margin:0;
-font-family:Arial;
-background:#f4f6f9;
+    margin:0;
+    font-family:'Inter',Arial,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
 }
 
-.header{
-background:#031228;
-color:white;
-padding:20px;
-text-align:center;
+a{color:inherit;}
+
+.app-shell{
+    display:flex;
+    min-height:100vh;
 }
 
-.container{
-width:500px;
-margin:40px auto;
-background:white;
-padding:35px;
-border-radius:12px;
-box-shadow:0 4px 15px rgba(0,0,0,0.12);
-text-align:center;
+.sidebar{
+    width:240px;
+    flex-shrink:0;
+    background:var(--ink);
+    color:#e7eaf1;
+    min-height:100vh;
+    position:sticky;
+    top:0;
+    padding:26px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.brand-mark{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:2px dashed var(--amber);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    color:var(--amber);
+    flex-shrink:0;
+}
+
+.brand-text h1{
+    margin:0;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:19px;
+}
+
+.brand-text p{
+    margin:2px 0 0;
+    font-size:11px;
+    color:#8b93a7;
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+}
+
+.nav-group{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.nav-link{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    border-radius:10px;
+    text-decoration:none;
+    color:#c8cede;
+    font-size:14px;
+    font-weight:500;
+}
+
+.nav-link:hover{
+    background:rgba(242,169,59,0.1);
+    color:#ffffff;
+}
+
+.main{
+    flex:1;
+    min-width:0;
+    padding:48px 40px;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+}
+
+.panel{
+    width:100%;
+    max-width:440px;
+    text-align:center;
+}
+
+.eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--lost);
+    margin:0 0 4px;
+}
+
+h2.title{
+    margin:0 0 24px;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:26px;
+}
+
+.card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:34px 30px;
+    box-shadow:0 1px 2px rgba(18,25,43,0.05);
+}
+
+.card h3{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:19px;
+    font-weight:600;
+    margin:0 0 24px;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    justify-content:center;
 }
 
 button{
-padding:14px 24px;
-background:#dc3545;
-color:white;
-border:none;
-border-radius:8px;
-font-size:16px;
-font-weight:bold;
-margin-right:10px;
+    padding:14px 24px;
+    background:var(--lost);
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:600;
 }
 
 button:hover{
-cursor:pointer;
-background:#bb2d3b;
+    cursor:pointer;
+    background:#a83349;
 }
 
 .cancel{
-display:inline-block;
-padding:14px 24px;
-background:#e9ecef;
-color:#051225;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
+    display:inline-flex;
+    align-items:center;
+    padding:14px 24px;
+    background:var(--paper);
+    color:var(--ink);
+    border:1px solid var(--line);
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:600;
 }
 
-.back{
-display:inline-block;
-margin-bottom:20px;
-color:#051225;
-text-decoration:none;
+.cancel:hover{
+    background:#e4e8ef;
 }
 
-.footer{
-text-align:center;
-padding:15px;
-color:gray;
+@media(max-width:900px){
+    .app-shell{ flex-direction:column; }
+    .sidebar{ width:100%; min-height:auto; position:relative; flex-direction:row; align-items:center; flex-wrap:wrap; }
+    .main{ padding:28px 18px; }
 }
 
 </style>
@@ -73,32 +202,51 @@ color:gray;
 
 <body>
 
-<div class="header">
-<h1>Delete Item</h1>
-<p>This action cannot be undone</p>
+<div class="app-shell">
+
+<aside class="sidebar">
+    <div class="brand">
+        <div class="brand-mark">U</div>
+        <div class="brand-text">
+            <h1>UniFind</h1>
+            <p>Lost &amp; Found</p>
+        </div>
+    </div>
+
+    <nav class="nav-group">
+        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="/add">+ Add Item</a>
+    </nav>
+</aside>
+
+<div class="main">
+
+    <div class="panel">
+
+        <p class="eyebrow">This action cannot be undone</p>
+        <h2 class="title">Delete Item</h2>
+
+        <div class="card">
+
+            <h3>Delete "{{item.title}}"?</h3>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="actions">
+                    <button type="submit">Yes, Delete</button>
+                    <a class="cancel" href="/">Cancel</a>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
 </div>
 
-<div class="container">
-
-<a class="back" href="/">
-← Back to Home
-</a>
-
-<h2>Delete "{{item.title}}"?</h2>
-
-<form method="POST">
-
-{% csrf_token %}
-
-<button type="submit">Yes, Delete</button>
-<a class="cancel" href="/">Cancel</a>
-
-</form>
-
-</div>
-
-<div class="footer">
-UniFind: A University-Based Lost & Found Management System
 </div>
 
 </body>

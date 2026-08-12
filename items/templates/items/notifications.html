@@ -1,92 +1,298 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Notifications</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notifications | UniFind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-        }
+<style>
 
-        .notification {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-        }
+:root{
+    --ink:#12192b;
+    --ink-soft:#5a6478;
+    --paper:#eef1f6;
+    --surface:#ffffff;
+    --line:#d7dee8;
+    --amber:#f2a93b;
+    --found:#1f8a5f;
+    --lost:#c9445a;
+    --radius:16px;
+}
 
-        .unread {
-            background: #f0f7ff;
-        }
+*{box-sizing:border-box;}
 
-        .message {
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
+body{
+    margin:0;
+    font-family:'Inter',Arial,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+}
 
-        .actions {
-            display: flex;
-            gap: 10px;
-        }
+a{color:inherit;}
 
-        button,
-        a {
-            padding: 10px 15px;
-            border-radius: 5px;
-            text-decoration: none;
-        }
+.app-shell{
+    display:flex;
+    min-height:100vh;
+}
 
-        .approve {
-            background: green;
-            color: white;
-        }
+.sidebar{
+    width:240px;
+    flex-shrink:0;
+    background:var(--ink);
+    color:#e7eaf1;
+    min-height:100vh;
+    position:sticky;
+    top:0;
+    padding:26px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+}
 
-        .reject {
-            background: red;
-            color: white;
-        }
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
 
-        .read {
-            background: #ddd;
-            color: black;
-        }
+.brand-mark{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:2px dashed var(--amber);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    color:var(--amber);
+    flex-shrink:0;
+}
 
-        .approve,
-        .reject {
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            color: white;
-            cursor: pointer;
-            margin-top: 15px;
-            margin-right: 8px;
-            font-weight: bold;
-        }
+.brand-text h1{
+    margin:0;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:19px;
+}
 
-        .approve {
-            background: #198754;
-        }
+.brand-text p{
+    margin:2px 0 0;
+    font-size:11px;
+    color:#8b93a7;
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+}
 
-        .reject {
-            background: #dc3545;
-        }
+.nav-group{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
 
-        .approve:hover {
-            background: #157347;
-        }
+.nav-link{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    border-radius:10px;
+    text-decoration:none;
+    color:#c8cede;
+    font-size:14px;
+    font-weight:500;
+}
 
-        .reject:hover {
-            background: #bb2d3b;
-        }
-    </style>
+.nav-link:hover{
+    background:rgba(242,169,59,0.1);
+    color:#ffffff;
+}
+
+.nav-link.primary{
+    background:var(--amber);
+    color:#20140a;
+    font-weight:600;
+}
+
+.nav-link.active{
+    background:rgba(242,169,59,0.14);
+    color:#ffffff;
+}
+
+.sidebar-footer{
+    margin-top:auto;
+}
+
+.logout-btn{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid #3a4358;
+    background:transparent;
+    border-radius:10px;
+    color:#c8cede;
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    text-align:left;
+}
+
+.logout-btn:hover{
+    border-color:var(--lost);
+    color:#ffb4be;
+}
+
+.main{
+    flex:1;
+    min-width:0;
+    padding:32px 40px;
+    max-width:820px;
+}
+
+.eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 4px;
+}
+
+h1.title{
+    margin:0 0 26px;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:28px;
+}
+
+.notification{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    margin-bottom:14px;
+    position:relative;
+}
+
+.notification.unread{
+    border-left:4px solid var(--amber);
+}
+
+.message{
+    font-size:15px;
+    margin-bottom:8px;
+    line-height:1.4;
+}
+
+.notification small{
+    font-family:'IBM Plex Mono',monospace;
+    color:var(--ink-soft);
+    font-size:11px;
+}
+
+.claim-actions{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+}
+
+.approve,
+.reject{
+    border:none;
+    padding:10px 16px;
+    border-radius:8px;
+    color:white;
+    cursor:pointer;
+    font-weight:600;
+    font-size:13px;
+}
+
+.approve{ background:var(--found); }
+.approve:hover{ background:#186e4b; }
+
+.reject{ background:var(--lost); }
+.reject:hover{ background:#a83349; }
+
+.claim-status{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    margin-top:12px;
+    color:var(--ink-soft);
+}
+
+.mark-read{
+    display:inline-block;
+    margin-top:14px;
+    padding:8px 14px;
+    border-radius:8px;
+    text-decoration:none;
+    background:var(--paper);
+    color:var(--ink-soft);
+    border:1px solid var(--line);
+    font-size:13px;
+    font-weight:600;
+}
+
+.mark-read:hover{
+    background:#e4e8ef;
+}
+
+.empty{
+    padding:40px 20px;
+    text-align:center;
+    border:2px dashed var(--line);
+    border-radius:var(--radius);
+    color:var(--ink-soft);
+    background:var(--surface);
+    font-family:'IBM Plex Mono',monospace;
+}
+
+@media(max-width:900px){
+    .app-shell{ flex-direction:column; }
+    .sidebar{ width:100%; min-height:auto; position:relative; flex-direction:row; align-items:center; flex-wrap:wrap; }
+    .sidebar-footer{ margin-top:0; }
+    .main{ padding:24px 18px; max-width:none; }
+}
+
+</style>
 </head>
 
 <body>
 
-    <h1>Notifications</h1>
+<div class="app-shell">
+
+<aside class="sidebar">
+
+    <div class="brand">
+        <div class="brand-mark">U</div>
+        <div class="brand-text">
+            <h1>UniFind</h1>
+            <p>Lost &amp; Found</p>
+        </div>
+    </div>
+
+    <nav class="nav-group">
+        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link primary" href="/add">+ Add Item</a>
+        <a class="nav-link active" href="{% url 'notifications' %}">Notifications</a>
+        <a class="nav-link" href="{% url 'student_dashboard' %}">Dashboard</a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
+
+</aside>
+
+<div class="main">
+
+    <p class="eyebrow">Claim activity</p>
+    <h1 class="title">Notifications</h1>
 
     {% if notifications %}
 
@@ -102,78 +308,36 @@
                     {{ notification.created_at|date:"M d, Y H:i" }}
                 </small>
 
-
                 {% if notification.claim %}
 
                     {% if notification.claim.status == 'pending' %}
 
-                        <!-- Accept Claim -->
-                        <form
-                            method="post"
-                            action="{% url 'approve_claim' notification.claim.id %}"
-                            style="display:inline;"
-                        >
+                    <div class="claim-actions">
 
+                        <form method="post" action="{% url 'approve_claim' notification.claim.id %}">
                             {% csrf_token %}
-
-                            <button
-                                class="approve"
-                                type="submit"
-                            >
-                                Accept Claim
-                            </button>
-
+                            <button class="approve" type="submit">Accept Claim</button>
                         </form>
 
-
-                        <!-- Reject Claim -->
-                        <form
-                            method="post"
-                            action="{% url 'reject_claim' notification.claim.id %}"
-                            style="display:inline;"
-                        >
-
+                        <form method="post" action="{% url 'reject_claim' notification.claim.id %}">
                             {% csrf_token %}
-
-                            <button
-                                class="reject"
-                                type="submit"
-                            >
-                                Reject Claim
-                            </button>
-
+                            <button class="reject" type="submit">Reject Claim</button>
                         </form>
+
+                    </div>
 
                     {% elif notification.claim.status == 'approved' %}
-
-                        <p>
-                            <strong>Claim Approved</strong>
-                        </p>
+                    <p class="claim-status">Claim Approved</p>
 
                     {% elif notification.claim.status == 'rejected' %}
-
-                        <p>
-                            <strong>Claim Rejected</strong>
-                        </p>
+                    <p class="claim-status">Claim Rejected</p>
 
                     {% endif %}
 
                 {% endif %}
 
-
                 {% if not notification.is_read %}
-
-                    <div style="margin-top:15px;">
-
-                        <a
-                            class="read"
-                            href="{% url 'mark_notification_read' notification.id %}"
-                        >
-                            Mark as read
-                        </a>
-
-                    </div>
-
+                <a class="mark-read" href="{% url 'mark_notification_read' notification.id %}">Mark as read</a>
                 {% endif %}
 
             </div>
@@ -182,9 +346,13 @@
 
     {% else %}
 
-        <p>You have no notifications.</p>
+    <div class="empty">You have no notifications.</div>
 
     {% endif %}
+
+</div>
+
+</div>
 
 </body>
 </html>

@@ -1,424 +1,661 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>UniFind</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UniFind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 
-    <style>
-        body{
-            margin:0;
-            font-family:Arial;
-            background:#f4f6f9;
-        }
+<style>
 
-        .header{
-            background:#020a14;
-            color:white;
-            padding:20px;
-            text-align:center;
-        }
-
-        .add-btn,
-        .login-btn,
-        .signup-btn{
-        padding:12px 22px;
-        border-radius:30px;
-        text-decoration:none;
-        font-weight:bold;
-        margin:8px;
-        display:inline-block;
-        }
-
-        .add-btn{
-        background:white;
-        color:#0d6efd;
-        }
-
-        .login-btn{
-        background:#ffc107;
-        color:black;
-        }
-
-        .signup-btn{
-        background:#198754;
-        color:white;
-        }
-
-        .card{
-            background:white;
-            width:60%;
-            margin:25px auto;
-            padding:20px;
-            border-radius:10px;
-            box-shadow:0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        img{
-            border-radius:8px;
-        }
-
-        .claim{
-            background:#198754;
-            color:white;
-            padding:8px 14px;
-            text-decoration:none;
-            border-radius:5px;
-        }
-
-        .edit{
-background:#0d6efd;
-color:white;
-padding:8px 14px;
-text-decoration:none;
-border-radius:5px;
-margin-left:6px;
+:root{
+    --ink:#12192b;
+    --ink-soft:#5a6478;
+    --paper:#eef1f6;
+    --surface:#ffffff;
+    --line:#d7dee8;
+    --amber:#f2a93b;
+    --amber-deep:#b8790a;
+    --found:#1f8a5f;
+    --found-bg:#e3f5ec;
+    --lost:#c9445a;
+    --lost-bg:#fbe8ea;
+    --claimed:#7c8697;
+    --claimed-bg:#eef1f4;
+    --radius:16px;
 }
 
-.delete{
-background:#dc3545;
-color:white;
-padding:8px 14px;
-text-decoration:none;
-border-radius:5px;
-margin-left:6px;
+*{box-sizing:border-box;}
+
+body{
+    margin:0;
+    font-family:'Inter',Arial,sans-serif;
+    background:var(--paper);
+    color:var(--ink);
 }
 
-        .claimed{
-            color:red;
-        }
+a{color:inherit;}
 
-        .site-footer {
-    background-color: #1f2937; /* Clean, dark background */
-    color: #ffffff;            /* White text */
-    text-align: center;
-    padding: 20px 10px;
-    margin-top: 40px;          /* Pushes it away from the content above */
-    width: 100%;
+.app-shell{
+    display:flex;
+    min-height:100vh;
+    align-items:flex-start;
 }
 
-.footer-content .college-name {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 5px;
+/* ---------- Sidebar ---------- */
+
+.sidebar{
+    width:240px;
+    flex-shrink:0;
+    background:var(--ink);
+    color:#e7eaf1;
+    min-height:100vh;
+    position:sticky;
+    top:0;
+    padding:26px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:28px;
 }
 
-.footer-content .copyright {
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
-        .login-btn, .signup-btn{
-            display:inline-block;
-            margin-left:10px;
-            padding:10px 18px;
-            text-decoration:none;
-            border-radius:6px;
-        }
-
-        .login-btn{
-            background:#ffffff;
-            color:#0d6efd;
-        }
-
-        .signup-btn{
-            background:#198754;
-            color:white;
-        }
-
-/* Styling for the empty state container */
-.no-items-container {
-    width: 100%;
-    max-width: 500px;
-    margin: 30px auto;
-    padding: 40px 20px;
-    text-align: center;
-    background-color: #f9fafb;
-    border: 2px dashed #cbd5e1;
-    border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
-/* Text styling for the message */
-.no-items-text {
-    font-size: 1.25rem;
-    color: #64748b;
-    font-weight: 500;
-    margin: 0;
+.brand-mark{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:2px dashed var(--amber);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    color:var(--amber);
+    flex-shrink:0;
 }
 
-/* Text styling for the message */
+.brand-text h1{
+    margin:0;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:19px;
+    letter-spacing:.02em;
+}
+
+.brand-text p{
+    margin:2px 0 0;
+    font-size:11px;
+    color:#8b93a7;
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+}
+
+.nav-group{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.nav-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:#5f6a80;
+    margin:10px 4px 4px;
+}
+
+.nav-link{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    border-radius:10px;
+    text-decoration:none;
+    color:#c8cede;
+    font-size:14px;
+    font-weight:500;
+    border-left:3px solid transparent;
+}
+
+.nav-link:hover{
+    background:rgba(242,169,59,0.1);
+    color:#ffffff;
+}
+
+.nav-link.primary{
+    background:var(--amber);
+    color:#20140a;
+    font-weight:600;
+}
+
+.nav-link.primary:hover{
+    background:#f7bb5c;
+}
+
+.sidebar-footer{
+    margin-top:auto;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.logout-btn{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid #3a4358;
+    background:transparent;
+    border-radius:10px;
+    color:#c8cede;
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    text-align:left;
+}
+
+.logout-btn:hover{
+    border-color:var(--lost);
+    color:#ffb4be;
+}
+
+/* ---------- Main ---------- */
+
+.main{
+    flex:1;
+    min-width:0;
+    padding:32px 40px 0;
+}
+
+.topbar{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-bottom:24px;
+}
+
+.topbar h2{
+    margin:0 0 4px;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:28px;
+}
+
+.topbar .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+}
+
+/* ---------- Search toolbar ---------- */
+
 .search-container{
-    width:min(90%,900px);
-    margin:25px auto;
-    padding:22px;
-    background:#ffffff;
-    border-radius:18px;
-    box-shadow:0 4px 6px rgba(0,0,0,.04),0 10px 25px rgba(0,0,0,.06);
-    border:1px solid #f1f5f9;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:24px;
 }
 
 .search-form{
     display:flex;
-    gap:14px;
+    gap:12px;
     flex-wrap:wrap;
 }
 
 .search-form input{
-    flex:1 1 250px;
-    padding:14px 18px;
-    border-radius:12px;
-    border:1px solid #e2e8f0;
-    background:#f8fafc;
-    transition:.25s;
+    flex:1 1 220px;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    font-family:'Inter',sans-serif;
+    font-size:14px;
 }
 
 .search-form input:focus{
     outline:none;
     background:white;
-    border-color:#2563eb;
-    box-shadow:0 0 0 4px rgba(37,99,235,.12);
+    border-color:var(--ink);
+}
+
+#statusFilter{
+    padding:0 14px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    font-size:14px;
+    font-weight:500;
+    height:44px;
+    cursor:pointer;
 }
 
 .search-btn{
-    padding:14px 24px;
+    padding:12px 22px;
     border:none;
-    border-radius:12px;
+    border-radius:10px;
     color:white;
     font-weight:600;
     cursor:pointer;
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
-    box-shadow:0 6px 18px rgba(37,99,235,.25);
-    transition:.25s;
+    background:var(--ink);
 }
 
 .search-btn:hover{
-    transform:translateY(-3px);
-    box-shadow:0 12px 28px rgba(37,99,235,.35);
+    background:#232c44;
 }
 
 .clear-btn{
-    padding:14px 24px;
-    border-radius:12px;
+    padding:12px 22px;
+    border-radius:10px;
     text-decoration:none;
-    background:#f8fafc;
-    color:#475569;
-    border:1px solid #e2e8f0;
-    transition:.25s;
+    background:var(--paper);
+    color:var(--ink-soft);
+    border:1px solid var(--line);
+    display:inline-flex;
+    align-items:center;
 }
 
 .clear-btn:hover{
-    transform:translateY(-3px);
-    background:white;
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    background:#e4e8ef;
 }
 
-@media(max-width:768px){
+/* ---------- Messages ---------- */
 
-.search-container{
-    width:92%;
-    padding:18px;
+.messages{
+    margin-bottom:20px;
 }
 
-.search-form{
-    flex-direction:column;
+.messages p{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-left:4px solid var(--amber);
+    padding:12px 16px;
+    border-radius:10px;
+    margin:0 0 8px;
+    font-size:14px;
 }
 
-.search-form input,
-.search-btn,
-.clear-btn{
+/* ---------- Board / Ticket cards ---------- */
+
+.board{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(420px,1fr));
+    gap:20px;
+    padding-bottom:40px;
+}
+
+.ticket{
+    position:relative;
+    display:flex;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:0 1px 2px rgba(18,25,43,0.05);
+}
+
+.ticket-media{
+    width:150px;
+    flex-shrink:0;
+    position:relative;
+    background:var(--paper);
+}
+
+.ticket-media img{
     width:100%;
-    box-sizing:border-box;
+    height:100%;
+    object-fit:cover;
+    display:block;
 }
 
+.ticket-status{
+    position:absolute;
+    top:10px;
+    left:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    padding:4px 8px;
+    border-radius:6px;
+    background:rgba(18,25,43,0.75);
+    color:white;
 }
 
-.logout-btn {
-    padding: 10px 18px;
-    border: none;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    background: #dc3545;
-    color: white;
-    cursor: pointer;
-    margin-left: 10px;
+.ticket-seam{
+    width:0;
+    border-left:2px dashed var(--line);
+    position:relative;
 }
 
-.logout-btn:hover {
-    background: #bb2d3b;
+.ticket-seam::before,
+.ticket-seam::after{
+    content:'';
+    position:absolute;
+    left:-9px;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    background:var(--paper);
 }
-    </style>
+
+.ticket-seam::before{ top:-9px; }
+.ticket-seam::after{ bottom:-9px; }
+
+.ticket-content{
+    flex:1;
+    min-width:0;
+    padding:16px 18px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.ticket-id{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    letter-spacing:.04em;
+}
+
+.ticket-content h2{
+    margin:0;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:19px;
+    line-height:1.25;
+}
+
+.ticket-content p{
+    margin:0;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    line-height:1.45;
+}
+
+.ticket-location{
+    font-size:13px;
+    color:var(--ink);
+}
+
+.ticket-location strong{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-right:6px;
+}
+
+.ticket-claim-note{
+    font-size:13px;
+    color:var(--ink-soft);
+}
+
+.claimed-stamp{
+    display:inline-block;
+    align-self:flex-start;
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:.08em;
+    color:var(--lost);
+    border:2px solid var(--lost);
+    padding:3px 10px;
+    border-radius:6px;
+    transform:rotate(-4deg);
+}
+
+.ticket-actions{
+    margin-top:auto;
+    padding-top:8px;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.claim,
+.edit,
+.delete{
+    padding:8px 14px;
+    text-decoration:none;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+    color:white;
+}
+
+.claim{ background:var(--found); }
+.claim:hover{ background:#186e4b; }
+
+.edit{ background:var(--ink); }
+.edit:hover{ background:#232c44; }
+
+.delete{ background:var(--lost); }
+.delete:hover{ background:#a83349; }
+
+/* ---------- Empty state ---------- */
+
+.no-items-container{
+    grid-column:1/-1;
+    padding:50px 20px;
+    text-align:center;
+    background:var(--surface);
+    border:2px dashed var(--line);
+    border-radius:var(--radius);
+}
+
+.no-items-text{
+    font-size:16px;
+    color:var(--ink-soft);
+    font-weight:500;
+    margin:0;
+    font-family:'IBM Plex Mono',monospace;
+}
+
+/* ---------- Footer ---------- */
+
+.site-footer{
+    background:var(--ink);
+    color:#c8cede;
+    text-align:center;
+    padding:22px 10px;
+    margin:20px -40px 0;
+}
+
+.footer-content .college-name{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:4px;
+}
+
+.footer-content .copyright{
+    font-size:12px;
+    opacity:.7;
+}
+
+@media(max-width:900px){
+    .app-shell{ flex-direction:column; }
+    .sidebar{ width:100%; min-height:auto; position:relative; flex-direction:row; align-items:center; flex-wrap:wrap; }
+    .sidebar-footer{ margin-top:0; }
+    .main{ padding:24px 18px 0; }
+    .site-footer{ margin:20px -18px 0; }
+    .board{ grid-template-columns:1fr; }
+    .ticket{ flex-direction:column; }
+    .ticket-media{ width:100%; height:180px; }
+    .ticket-seam{ display:none; }
+}
+
+</style>
 
 </head>
 
 <body>
 
-<div class="header">
-    <h1>UniFind</h1>
-    <p>A University-Based Lost & Found Management System</p>
-    <div>
-        <a class="add-btn" href="/add">+ Add Item</a>
+<div class="app-shell">
+
+<aside class="sidebar">
+
+    <div class="brand">
+        <div class="brand-mark">U</div>
+        <div class="brand-text">
+            <h1>UniFind</h1>
+            <p>Lost &amp; Found</p>
+        </div>
+    </div>
+
+    <nav class="nav-group">
+        <a class="nav-link primary" href="/add">+ Add Item</a>
+        <a class="nav-link" href="/">Home</a>
+
         {% if user.is_authenticated %}
+        <div class="nav-label">Account</div>
+        <a class="nav-link" href="{% url 'notifications' %}">Notifications</a>
+        <a class="nav-link" href="{% url 'student_dashboard' %}">Dashboard</a>
+        {% endif %}
+    </nav>
 
-        <a class="login-btn" href="{% url 'notifications' %}">
-            Notifications
-        </a>
-
-        <a class="login-btn" href="{% url 'student_dashboard' %}">
-            Dashboard
-        </a>
-
-        <form
-            method="post"
-            action="{% url 'logout' %}"
-            style="display:inline;"
-        >
+    <div class="sidebar-footer">
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
-
-            <button
-                type="submit"
-                class="logout-btn"
-            >
-                Logout
-            </button>
+            <button type="submit" class="logout-btn">Logout</button>
         </form>
-
         {% else %}
-
-        <a class="login-btn" href="/login">
-            Login
-        </a>
-
-        <a class="signup-btn" href="/signup">
-            Sign Up
-        </a>
-
+        <a class="nav-link" href="/login">Login</a>
+        <a class="nav-link primary" href="/signup">Sign Up</a>
         {% endif %}
     </div>
-</div>
 
-{% if messages %}
-<div class="card">
-{% for message in messages %}
-<p class="{{ message.tags }}">{{ message }}</p>
-{% endfor %}
-</div>
-{% endif %}
+</aside>
 
-<div class="search-container">
+<div class="main">
 
-<form method="GET" class="search-form">
+    <div class="topbar">
+        <div>
+            <p class="eyebrow">Campus lost &amp; found board</p>
+            <h2>Browse reported items</h2>
+        </div>
+    </div>
 
-    <input
-    name="title"
-    placeholder=" Search by Title"
-    value="{{title}}">
-
-    <input
-    name="location"
-    placeholder=" Search by Location"
-    value="{{location}}">
-
-    <!-- The new styled Filter Dropdown fits right here -->
-    <select id="statusFilter" style="
-    padding: 0 16px; 
-    border-radius: 8px; 
-    border: 1px solid #ccc; 
-    background-color: #ffffff;
-    color: #333;
-    font-size: 14px; 
-    font-weight: 500;
-    outline: none; 
-    cursor: pointer;
-    height: 44px;
-    box-sizing: border-box;
-">
-    <option value="all">🔍  All Items</option>
-    <option value="lost">🛑 Lost Items</option>
-    <option value="found">✅ Found Items</option>
-</select>
-
-    <button class="search-btn">
-    Search
-    </button>
-
-    <a href="/" class="clear-btn">
-    Clear
-    </a>
-
-</form>
-</div>
-
-
-
-<!-- STEP 2: Your loop begins here -->
-{% for item in items %}
-<!-- We added data-status="{{ item.status|lower }}" to this line so JavaScript can read if it is lost or found -->
-<div class="card" data-status="{{ item.status|lower }}">
-
-    <img src="{{item.image.url}}" width="220">
-
-    <h2>{{item.title}}</h2>
-
-    <p>{{item.description}}</p>
-
-    <p><strong>Location:</strong> {{item.location}}</p>
-
-    {% if item.claimed %}
-    <h3 class="claimed">CLAIMED</h3>
-    {% else %}
-    <p>Claimed By: {{item.claimed_by.username}}</p>
-    <a
-        class="claim"
-        href="/claim/{{item.id}}"
-        onclick="return confirm('Are you sure you want to claim this item?');"
-    >
-        Claim Item
-    </a>
+    {% if messages %}
+    <div class="messages">
+    {% for message in messages %}
+    <p class="{{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+    </div>
     {% endif %}
 
-    {% if item.owner == user %}
-    <a class="edit" href="/edit/{{item.id}}/">Edit</a>
-    <a class="delete" href="/delete/{{item.id}}/">Delete</a>
-    {% endif %}
+    <div class="search-container">
+        <form method="GET" class="search-form">
+
+            <input name="title" placeholder=" Search by Title" value="{{title}}">
+            <input name="location" placeholder=" Search by Location" value="{{location}}">
+
+            <select id="statusFilter">
+                <option value="all">🔍  All Items</option>
+                <option value="lost">🛑 Lost Items</option>
+                <option value="found">✅ Found Items</option>
+            </select>
+
+            <button class="search-btn">Search</button>
+            <a href="/" class="clear-btn">Clear</a>
+
+        </form>
+    </div>
+
+    <section class="board">
+
+    {% for item in items %}
+    <div class="ticket" data-status="{{ item.status|lower }}">
+
+        <div class="ticket-media">
+            <img src="{{item.image.url}}" alt="{{item.title}}">
+            <span class="ticket-status">{{ item.status }}</span>
+        </div>
+
+        <div class="ticket-seam"></div>
+
+        <div class="ticket-content">
+
+            <span class="ticket-id">TAG-{{item.id}}</span>
+
+            <h2>{{item.title}}</h2>
+            <p>{{item.description}}</p>
+
+            <p class="ticket-location"><strong>Location</strong>{{item.location}}</p>
+
+            {% if item.claimed %}
+            <span class="claimed-stamp">CLAIMED</span>
+            {% else %}
+            <p class="ticket-claim-note">Claimed By: {{item.claimed_by.username}}</p>
+            {% endif %}
+
+            <div class="ticket-actions">
+
+                {% if not item.claimed %}
+                <a class="claim" href="/claim/{{item.id}}" onclick="return confirm('Are you sure you want to claim this item?');">Claim Item</a>
+                {% endif %}
+
+                {% if item.owner == user %}
+                <a class="edit" href="/edit/{{item.id}}/">Edit</a>
+                <a class="delete" href="/delete/{{item.id}}/">Delete</a>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="no-items-container">
+        <p class="no-items-text">No lost/found items available</p>
+    </div>
+
+    {% endfor %}
+
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <p class="college-name">UniFind: A University-Based Lost &amp; Found Management System</p>
+            <p class="copyright">&copy; 2026 UniFind. All Rights Reserved.</p>
+        </div>
+    </footer>
 
 </div>
 
-{% empty %}
-
-<div class="no-items-container">
-    <p class="no-items-text">No lost/found items available</p>
 </div>
 
-{% endfor %}
-
-
-<!-- STEP 3: Put this magic JavaScript script at the very bottom of your file -->
 <script>
-    // This watches your dropdown menu. When you change the option, it runs this code:
     document.getElementById('statusFilter').addEventListener('change', function() {
-        const selectedFilter = this.value; // This will be 'all', 'lost', or 'found'
-        const cards = document.querySelectorAll('.card'); // This grabs all your items
+        const selectedFilter = this.value;
+        const cards = document.querySelectorAll('.ticket');
 
         cards.forEach(card => {
-            const cardStatus = card.getAttribute('data-status'); // Looks at the item's status
+            const cardStatus = card.getAttribute('data-status');
 
-            // If you choose 'All', or if the item matches your choice, show it. Otherwise, hide it!
             if (selectedFilter === 'all' || cardStatus === selectedFilter) {
-                card.style.display = ''; // Show item
+                card.style.display = '';
             } else {
-                card.style.display = 'none'; // Hide item
+                card.style.display = 'none';
             }
         });
     });
 </script>
 
-<!-- Footer Section -->
-<footer class="site-footer">
-    <div class="footer-content">
-        <p class="college-name">UniFind: A University-Based Lost & Found Management System</p>
-        <p class="copyright">&copy; 2026 UniFind. All Rights Reserved.</p>
-    </div>
-</footer>
-
 </body>
 </html>
-

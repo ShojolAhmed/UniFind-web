@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login · UniFind</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
   *, *::before, *::after {
@@ -14,242 +15,177 @@
   }
 
   :root {
-    --ink:      #0d0f1c;
-    --indigo:   #4338ca;
-    --indigo-d: #3730a3;
-    --amber:    #f59e0b;
-    --amber-l:  #fef3c7;
-    --slate:    #64748b;
-    --border:   #e2e8f0;
+    --ink:      #12192b;
+    --ink-soft: #5a6478;
+    --paper:    #eef1f6;
     --surface:  #ffffff;
-    --bg:       #f1f5f9;
+    --line:     #d7dee8;
+    --amber:    #f2a93b;
+    --amber-deep: #b8790a;
   }
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
-    background: var(--bg);
+    background: var(--paper);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 24px 16px;
-    background-image:
-      radial-gradient(circle at 20% 20%, rgba(67,56,202,0.08) 0%, transparent 55%),
-      radial-gradient(circle at 80% 80%, rgba(245,158,11,0.07) 0%, transparent 55%);
   }
 
-  .card {
+  .ticket {
     width: 100%;
     max-width: 420px;
     background: var(--surface);
     border-radius: 20px;
+    border: 1px solid var(--line);
     overflow: hidden;
-    box-shadow:
-      0 0 0 1px rgba(0,0,0,0.06),
-      0 8px 24px rgba(0,0,0,0.08),
-      0 32px 64px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 2px rgba(18,25,43,0.05), 0 24px 48px rgba(18,25,43,0.08);
   }
 
-  .card-header {
-    background: linear-gradient(135deg, var(--indigo) 0%, #312e81 100%);
-    padding: 36px 40px 32px;
+  .stub {
+    background: var(--ink);
+    padding: 34px 40px 30px;
     position: relative;
-    overflow: hidden;
   }
 
-  .card-header::before {
-    content: '';
-    position: absolute;
-    top: -30px;
-    right: -30px;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.05);
-  }
-
-  .card-header::after {
-    content: '';
-    position: absolute;
-    bottom: -50px;
-    right: 20px;
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.04);
-  }
-
-  .badge {
-    display: inline-flex;
+  .brand {
+    display: flex;
     align-items: center;
-    gap: 6px;
-    background: rgba(245,158,11,0.18);
-    border: 1px solid rgba(245,158,11,0.35);
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px dashed var(--amber);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
     color: var(--amber);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 100px;
-    margin-bottom: 14px;
+    flex-shrink: 0;
   }
 
-  .badge svg {
-    width: 11px;
-    height: 11px;
-    fill: var(--amber);
+  .brand span.name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #ffffff;
   }
 
-  .card-header h1 {
+  .stub h1 {
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 26px;
     font-weight: 700;
     color: #ffffff;
     line-height: 1.2;
-    letter-spacing: -0.4px;
   }
 
-  .card-header p {
+  .stub p {
     margin-top: 6px;
     font-size: 14px;
     color: rgba(255,255,255,0.55);
-    font-weight: 400;
   }
 
-  .card-body {
-    padding: 36px 40px 32px;
+  .perforation {
+    height: 0;
+    border-top: 2px dashed var(--line);
+    position: relative;
+  }
+
+  .perforation::before,
+  .perforation::after {
+    content: '';
+    position: absolute;
+    top: -9px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--paper);
+  }
+
+  .perforation::before { left: -9px; }
+  .perforation::after { right: -9px; }
+
+  .body {
+    padding: 32px 40px 34px;
   }
 
   form p {
     display: flex;
     flex-direction: column;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
 
   form p label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #374151;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
     margin-bottom: 6px;
-    letter-spacing: 0.01em;
   }
 
   form p input {
     width: 100%;
-    padding: 11px 14px;
+    padding: 12px 14px;
     font-size: 14px;
     font-family: 'Inter', sans-serif;
     color: var(--ink);
-    background: #f8fafc;
-    border: 1.5px solid var(--border);
+    background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: 10px;
     outline: none;
-    transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+    transition: border-color .18s, background .18s;
   }
 
   form p input:focus {
     background: #ffffff;
-    border-color: var(--indigo);
-    box-shadow: 0 0 0 3px rgba(67,56,202,0.12);
-  }
-
-  form p input::placeholder {
-    color: #b0bac4;
+    border-color: var(--ink);
   }
 
   .btn-login {
     width: 100%;
-    padding: 13px;
+    padding: 14px;
     margin-top: 6px;
     border: none;
     border-radius: 10px;
-    background: linear-gradient(135deg, var(--indigo) 0%, #312e81 100%);
-    color: #ffffff;
+    background: var(--amber);
+    color: #20140a;
     font-size: 15px;
     font-family: 'Inter', sans-serif;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    letter-spacing: 0.01em;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 4px 14px rgba(67,56,202,0.35);
-  }
-
-  .btn-login::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,0);
-    transition: background 0.15s;
   }
 
   .btn-login:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(67,56,202,0.45);
+    background: #f7bb5c;
   }
 
-  .btn-login:hover::after {
-    background: rgba(255,255,255,0.06);
-  }
-
-  .btn-login:active {
-    transform: translateY(0);
-  }
-
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 24px 0 20px;
-  }
-
-  .divider::before,
-  .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .divider span {
-    font-size: 12px;
-    color: #94a3b8;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-
-  .card-footer {
+  .footer-note {
     text-align: center;
     padding: 0 40px 32px;
   }
 
-  .card-footer p {
+  .footer-note p {
     font-size: 14px;
-    color: var(--slate);
+    color: var(--ink-soft);
   }
 
-  .card-footer a {
-    color: var(--indigo);
+  .footer-note a {
+    color: var(--ink);
     text-decoration: none;
-    font-weight: 600;
-    transition: color 0.15s;
-  }
-
-  .card-footer a:hover {
-    color: var(--indigo-d);
-    text-decoration: underline;
-  }
-
-  .highlight {
-    color: var(--amber);
     font-weight: 700;
+    border-bottom: 1px solid var(--amber);
   }
 
   @media (max-width: 480px) {
-    .card-header,
-    .card-body,
-    .card-footer {
+    .stub, .body, .footer-note {
       padding-left: 24px;
       padding-right: 24px;
     }
@@ -259,20 +195,20 @@
 </head>
 <body>
 
-<div class="card">
+<div class="ticket">
 
-  <div class="card-header">
-    <div class="badge">
-      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="8" cy="8" r="8"/>
-      </svg>
-      UniFind: Lost & Found
+  <div class="stub">
+    <div class="brand">
+        <div class="brand-mark">U</div>
+        <span class="name">UniFind</span>
     </div>
-    <h1>Welcome <span class="highlight">back</span></h1>
+    <h1>Welcome back</h1>
     <p>Sign in to report or recover lost items</p>
   </div>
 
-  <div class="card-body">
+  <div class="perforation"></div>
+
+  <div class="body">
     <form method="POST">
 
       {% csrf_token %}
@@ -284,13 +220,8 @@
     </form>
   </div>
 
-  <div class="divider" style="margin: 0 40px;">
-    <span>Don't have an account?</span>
-   
-  </div>
-
-  <div class="card-footer">
-    <p><a href="/signup">Create a new account →</a></p>
+  <div class="footer-note">
+    <p>Don't have an account? <a href="/signup">Create one →</a></p>
   </div>
 
 </div>
