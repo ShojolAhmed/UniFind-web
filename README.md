@@ -157,6 +157,31 @@ The project leverages Django's built-in administration framework to manage appli
 
 ---
 
+## Changelog
+
+All notable changes to this project will be documented in this section.
+
+### [2.0.0] - UI Overhaul
+
+#### Changed
+- Completely redesigned the entire user interface with a modern look and feel.
+
+### [1.0.0] - Initial Release
+
+#### Added
+- **Authentication System:** User registration, login, and logout functionality.
+- **Student Dashboard:** Centralized dashboard to view personal posts, active claims, and claim status.
+- **Item Reporting:** Ability to post lost or found items with title, description, campus location, item type, contact details, and image attachment.
+- **Search & Filter:** Keyword search by item title and location, with filtering options for lost vs. found status.
+- **Claim System:** Interactive workflow allowing users to submit claims on posted items.
+- **Internal Notifications:** Automated internal system alerts notifying owners when a claim is placed on their item.
+- **Claim Management:** Post owners can review pending claims and choose to accept or reject them.
+- **Post Management:** Full CRUD capability for users to update or delete their listed items.
+- **Admin Interface:** Integrated Django admin panel (`/admin/`) for overall database and user management.
+- **Static & Media Asset Handling:** Configured WhiteNoise for static file serving and Pillow for media file management.
+
+---
+
 ## Acknowledgements
 
 UniFind was developed based on the open-source project
