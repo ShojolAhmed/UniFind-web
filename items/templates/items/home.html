@@ -92,11 +92,11 @@
     <section class="board">
 
     {% for item in items %}
-    <div class="ticket" data-status="{{ item.status|lower }}">
+    <div class="ticket" data-status="{{ item.item_type|lower }}">
 
         <div class="ticket-media">
             <img src="{{item.image.url}}" alt="{{item.title}}">
-            <span class="ticket-status">{{ item.status }}</span>
+            <span class="ticket-status">{{ item.item_type }}</span>
         </div>
 
         <div class="ticket-seam"></div>

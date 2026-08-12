@@ -161,6 +161,12 @@ The project leverages Django's built-in administration framework to manage appli
 
 All notable changes to this project will be documented in this section.
 
+### [2.1.1] - Bug Fixes
+
+#### Fixed
+- Fixed an issue where item status was not displaying on item cards.
+- Resolved a bug where filtering by lost or found status was not working correctly.
+
 ### [2.1.0] - Patch & Navigation Update
 
 #### Added
