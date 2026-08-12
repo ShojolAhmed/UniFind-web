@@ -1,227 +1,45 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login · UniFind</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-
-<style>
-  *, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  :root {
-    --ink:      #12192b;
-    --ink-soft: #5a6478;
-    --paper:    #eef1f6;
-    --surface:  #ffffff;
-    --line:     #d7dee8;
-    --amber:    #f2a93b;
-    --amber-deep: #b8790a;
-  }
-
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background: var(--paper);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px 16px;
-  }
-
-  .ticket {
-    width: 100%;
-    max-width: 420px;
-    background: var(--surface);
-    border-radius: 20px;
-    border: 1px solid var(--line);
-    overflow: hidden;
-    box-shadow: 0 1px 2px rgba(18,25,43,0.05), 0 24px 48px rgba(18,25,43,0.08);
-  }
-
-  .stub {
-    background: var(--ink);
-    padding: 34px 40px 30px;
-    position: relative;
-  }
-
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 18px;
-  }
-
-  .brand-mark {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: 2px dashed var(--amber);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    color: var(--amber);
-    flex-shrink: 0;
-  }
-
-  .brand span.name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700;
-    font-size: 16px;
-    color: #ffffff;
-  }
-
-  .stub h1 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    color: #ffffff;
-    line-height: 1.2;
-  }
-
-  .stub p {
-    margin-top: 6px;
-    font-size: 14px;
-    color: rgba(255,255,255,0.55);
-  }
-
-  .perforation {
-    height: 0;
-    border-top: 2px dashed var(--line);
-    position: relative;
-  }
-
-  .perforation::before,
-  .perforation::after {
-    content: '';
-    position: absolute;
-    top: -9px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--paper);
-  }
-
-  .perforation::before { left: -9px; }
-  .perforation::after { right: -9px; }
-
-  .body {
-    padding: 32px 40px 34px;
-  }
-
-  form p {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 16px;
-  }
-
-  form p label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: .05em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    margin-bottom: 6px;
-  }
-
-  form p input {
-    width: 100%;
-    padding: 12px 14px;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    color: var(--ink);
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    outline: none;
-    transition: border-color .18s, background .18s;
-  }
-
-  form p input:focus {
-    background: #ffffff;
-    border-color: var(--ink);
-  }
-
-  .btn-login {
-    width: 100%;
-    padding: 14px;
-    margin-top: 6px;
-    border: none;
-    border-radius: 10px;
-    background: var(--amber);
-    color: #20140a;
-    font-size: 15px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  .btn-login:hover {
-    background: #f7bb5c;
-  }
-
-  .footer-note {
-    text-align: center;
-    padding: 0 40px 32px;
-  }
-
-  .footer-note p {
-    font-size: 14px;
-    color: var(--ink-soft);
-  }
-
-  .footer-note a {
-    color: var(--ink);
-    text-decoration: none;
-    font-weight: 700;
-    border-bottom: 1px solid var(--amber);
-  }
-
-  @media (max-width: 480px) {
-    .stub, .body, .footer-note {
-      padding-left: 24px;
-      padding-right: 24px;
-    }
-  }
-</style>
-
+<link rel="stylesheet" href="{% static 'css/unifind.css' %}">
 </head>
 <body>
 
-<div class="ticket">
+<div class="auth-screen">
 
-  <div class="stub">
-    <div class="brand">
-        <div class="brand-mark">U</div>
-        <span class="name">UniFind</span>
+  <div class="auth-card">
+
+    <div class="auth-stub">
+      <div class="brand">
+          <div class="brand-mark">U</div>
+          <span class="name">UniFind</span>
+      </div>
+      <h1>Welcome back</h1>
+      <p>Sign in to report or recover lost items</p>
     </div>
-    <h1>Welcome back</h1>
-    <p>Sign in to report or recover lost items</p>
-  </div>
 
-  <div class="perforation"></div>
+    <div class="auth-perforation"></div>
 
-  <div class="body">
-    <form method="POST">
+    <div class="auth-body">
+      <form method="POST">
 
-      {% csrf_token %}
+        {% csrf_token %}
 
-      {{form.as_p}}
+        {{form.as_p}}
 
-      <button type="submit" class="btn-login">Sign in</button>
+        <button type="submit" class="btn btn-amber btn-block">Sign in</button>
 
-    </form>
-  </div>
+      </form>
+    </div>
 
-  <div class="footer-note">
-    <p>Don't have an account? <a href="/signup">Create one →</a></p>
+    <div class="auth-footer-note">
+      <p>Don't have an account? <a href="/signup">Create one →</a></p>
+    </div>
+
   </div>
 
 </div>

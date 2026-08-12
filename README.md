@@ -161,6 +161,12 @@ The project leverages Django's built-in administration framework to manage appli
 
 All notable changes to this project will be documented in this section.
 
+### [2.1.0] - Patch & Navigation Update
+
+#### Added
+- Added responsive design support across different screen sizes.
+- Introduced an updated, better navbar and sidebar for improved navigation.
+
 ### [2.0.0] - UI Overhaul
 
 #### Changed

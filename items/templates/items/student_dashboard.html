@@ -1,370 +1,25 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Dashboard | UniFind</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-
-<style>
-
-:root{
-    --ink:#12192b;
-    --ink-soft:#5a6478;
-    --paper:#eef1f6;
-    --surface:#ffffff;
-    --line:#d7dee8;
-    --amber:#f2a93b;
-    --found:#1f8a5f;
-    --found-bg:#e3f5ec;
-    --lost:#c9445a;
-    --lost-bg:#fbe8ea;
-    --pending:#b8790a;
-    --pending-bg:#fbf0dc;
-    --radius:16px;
-}
-
-*{box-sizing:border-box;}
-
-body{
-    margin:0;
-    font-family:'Inter',Arial,sans-serif;
-    background:var(--paper);
-    color:var(--ink);
-}
-
-a{color:inherit;}
-
-.app-shell{
-    display:flex;
-    min-height:100vh;
-}
-
-.sidebar{
-    width:240px;
-    flex-shrink:0;
-    background:var(--ink);
-    color:#e7eaf1;
-    min-height:100vh;
-    position:sticky;
-    top:0;
-    padding:26px 20px;
-    display:flex;
-    flex-direction:column;
-    gap:28px;
-}
-
-.brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.brand-mark{
-    width:40px;
-    height:40px;
-    border-radius:50%;
-    border:2px dashed var(--amber);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:700;
-    color:var(--amber);
-    flex-shrink:0;
-}
-
-.brand-text h1{
-    margin:0;
-    font-family:'Space Grotesk',sans-serif;
-    font-size:19px;
-}
-
-.brand-text p{
-    margin:2px 0 0;
-    font-size:11px;
-    color:#8b93a7;
-    font-family:'IBM Plex Mono',monospace;
-    letter-spacing:.05em;
-    text-transform:uppercase;
-}
-
-.nav-group{
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-}
-
-.nav-link{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:10px 12px;
-    border-radius:10px;
-    text-decoration:none;
-    color:#c8cede;
-    font-size:14px;
-    font-weight:500;
-}
-
-.nav-link:hover{
-    background:rgba(242,169,59,0.1);
-    color:#ffffff;
-}
-
-.nav-link.primary{
-    background:var(--amber);
-    color:#20140a;
-    font-weight:600;
-}
-
-.nav-link.active{
-    background:rgba(242,169,59,0.14);
-    color:#ffffff;
-}
-
-.sidebar-footer{
-    margin-top:auto;
-}
-
-.logout-btn{
-    width:100%;
-    padding:10px 12px;
-    border:1px solid #3a4358;
-    background:transparent;
-    border-radius:10px;
-    color:#c8cede;
-    font-family:'Inter',sans-serif;
-    font-size:14px;
-    font-weight:500;
-    cursor:pointer;
-    text-align:left;
-}
-
-.logout-btn:hover{
-    border-color:var(--lost);
-    color:#ffb4be;
-}
-
-.main{
-    flex:1;
-    min-width:0;
-    padding:32px 40px 0;
-}
-
-.eyebrow{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    color:var(--ink-soft);
-    margin:0 0 4px;
-}
-
-h1.title{
-    margin:0 0 26px;
-    font-family:'Space Grotesk',sans-serif;
-    font-size:28px;
-}
-
-/* ---------- Summary ---------- */
-
-.summary{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:16px;
-    margin-bottom:30px;
-}
-
-.summary-box{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:20px 22px;
-}
-
-.summary-box h2{
-    margin:0 0 6px;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    color:var(--ink-soft);
-    font-weight:600;
-}
-
-.summary-box p{
-    margin:0;
-    font-family:'Space Grotesk',sans-serif;
-    font-size:34px;
-    font-weight:700;
-    color:var(--ink);
-}
-
-/* ---------- Sections ---------- */
-
-.section{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:24px;
-    margin-bottom:24px;
-}
-
-.section-title{
-    margin:0 0 18px;
-    font-family:'Space Grotesk',sans-serif;
-    font-size:20px;
-}
-
-.item-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:16px;
-}
-
-.item-card{
-    border:1px solid var(--line);
-    border-radius:12px;
-    overflow:hidden;
-    background:var(--surface);
-}
-
-.item-card img{
-    width:100%;
-    height:160px;
-    object-fit:cover;
-    background:var(--paper);
-}
-
-.item-content{
-    padding:16px;
-}
-
-.item-content h3{
-    margin:8px 0 6px;
-    font-family:'Space Grotesk',sans-serif;
-    font-size:18px;
-}
-
-.item-content p{
-    margin:6px 0;
-    line-height:1.4;
-    font-size:13.5px;
-    color:var(--ink-soft);
-}
-
-.item-content p strong{
-    font-family:'IBM Plex Mono',monospace;
-    font-weight:600;
-    font-size:11px;
-    letter-spacing:.05em;
-    text-transform:uppercase;
-    color:var(--ink);
-    margin-right:4px;
-}
-
-.badge{
-    display:inline-block;
-    padding:4px 9px;
-    border-radius:6px;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:11px;
-    font-weight:600;
-    letter-spacing:.04em;
-    text-transform:uppercase;
-    background:var(--found-bg);
-    color:var(--found);
-}
-
-.badge.pending{
-    background:var(--pending-bg);
-    color:var(--pending);
-}
-
-.badge.claimed{
-    background:var(--lost-bg);
-    color:var(--lost);
-    margin-left:6px;
-}
-
-.actions{
-    margin-top:14px;
-    display:flex;
-    gap:8px;
-}
-
-.edit,
-.delete{
-    display:inline-block;
-    padding:8px 12px;
-    border-radius:8px;
-    text-decoration:none;
-    color:white;
-    font-size:13px;
-    font-weight:600;
-}
-
-.edit{ background:var(--ink); }
-.edit:hover{ background:#232c44; }
-
-.delete{ background:var(--lost); }
-.delete:hover{ background:#a83349; }
-
-.empty{
-    padding:28px;
-    text-align:center;
-    border:2px dashed var(--line);
-    border-radius:12px;
-    color:var(--ink-soft);
-    background:var(--paper);
-    font-family:'IBM Plex Mono',monospace;
-    font-size:13px;
-}
-
-/* ---------- Footer ---------- */
-
-.site-footer{
-    background:var(--ink);
-    color:#c8cede;
-    text-align:center;
-    padding:22px 10px;
-    margin:0 -40px;
-}
-
-.site-footer p{
-    margin:0;
-}
-
-.site-footer p:first-child{
-    font-family:'Space Grotesk',sans-serif;
-    font-size:14px;
-    font-weight:600;
-    margin-bottom:4px;
-}
-
-.site-footer p:last-child{
-    font-size:12px;
-    opacity:.7;
-}
-
-@media(max-width:900px){
-    .app-shell{ flex-direction:column; }
-    .sidebar{ width:100%; min-height:auto; position:relative; flex-direction:row; align-items:center; flex-wrap:wrap; }
-    .sidebar-footer{ margin-top:0; }
-    .main{ padding:24px 18px 0; }
-    .site-footer{ margin:0 -18px; }
-}
-
-</style>
+<link rel="stylesheet" href="{% static 'css/unifind.css' %}">
 </head>
 
 <body>
 
 <div class="app-shell">
 
-<aside class="sidebar">
+<div class="topnav-mobile">
+    <button class="hamburger" id="sidebarToggle" aria-label="Open menu">☰</button>
+    <div class="brand-mini"><span class="brand-mark-mini">U</span> UniFind</div>
+</div>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<aside class="sidebar" id="sidebar">
 
     <div class="brand">
         <div class="brand-mark">U</div>
@@ -393,7 +48,7 @@ h1.title{
 <div class="main">
 
     <p class="eyebrow">Your activity</p>
-    <h1 class="title">Student Dashboard</h1>
+    <h1 class="page-title">Student Dashboard</h1>
 
     <div class="summary">
         <div class="summary-box">
@@ -427,8 +82,8 @@ h1.title{
                     <p><strong>Claimed by</strong>{{ item.claimed_by.username }}</p>
                     {% endif %}
                     <div class="actions">
-                        <a class="edit" href="/edit/{{ item.id }}/">Edit</a>
-                        <a class="delete" href="/delete/{{ item.id }}/">Delete</a>
+                        <a class="btn btn-sm btn-ink" href="/edit/{{ item.id }}/">Edit</a>
+                        <a class="btn btn-sm btn-danger" href="/delete/{{ item.id }}/">Delete</a>
                     </div>
                 </div>
             </article>
@@ -516,6 +171,8 @@ h1.title{
 </div>
 
 </div>
+
+<script src="{% static 'js/unifind.js' %}"></script>
 
 </body>
 </html>
