@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifications</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .notification {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .unread {
+            background: #f0f7ff;
+        }
+
+        .message {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        button,
+        a {
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .approve {
+            background: green;
+            color: white;
+        }
+
+        .reject {
+            background: red;
+            color: white;
+        }
+
+        .read {
+            background: #ddd;
+            color: black;
+        }
+
+        .approve,
+        .reject {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            margin-top: 15px;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .approve {
+            background: #198754;
+        }
+
+        .reject {
+            background: #dc3545;
+        }
+
+        .approve:hover {
+            background: #157347;
+        }
+
+        .reject:hover {
+            background: #bb2d3b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Notifications</h1>
+
+    {% if notifications %}
+
+        {% for notification in notifications %}
+
+            <div class="notification {% if not notification.is_read %}unread{% endif %}">
+
+                <div class="message">
+                    {{ notification.message }}
+                </div>
+
+                <small>
+                    {{ notification.created_at|date:"M d, Y H:i" }}
+                </small>
+
+
+                {% if notification.claim %}
+
+                    {% if notification.claim.status == 'pending' %}
+
+                        <!-- Accept Claim -->
+                        <form
+                            method="post"
+                            action="{% url 'approve_claim' notification.claim.id %}"
+                            style="display:inline;"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                class="approve"
+                                type="submit"
+                            >
+                                Accept Claim
+                            </button>
+
+                        </form>
+
+
+                        <!-- Reject Claim -->
+                        <form
+                            method="post"
+                            action="{% url 'reject_claim' notification.claim.id %}"
+                            style="display:inline;"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                class="reject"
+                                type="submit"
+                            >
+                                Reject Claim
+                            </button>
+
+                        </form>
+
+                    {% elif notification.claim.status == 'approved' %}
+
+                        <p>
+                            <strong>Claim Approved</strong>
+                        </p>
+
+                    {% elif notification.claim.status == 'rejected' %}
+
+                        <p>
+                            <strong>Claim Rejected</strong>
+                        </p>
+
+                    {% endif %}
+
+                {% endif %}
+
+
+                {% if not notification.is_read %}
+
+                    <div style="margin-top:15px;">
+
+                        <a
+                            class="read"
+                            href="{% url 'mark_notification_read' notification.id %}"
+                        >
+                            Mark as read
+                        </a>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+    {% else %}
+
+        <p>You have no notifications.</p>
+
+    {% endif %}
+
+</body>
+</html>

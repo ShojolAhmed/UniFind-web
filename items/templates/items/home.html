@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UniFind</title>
+
+    <style>
+        body{
+            margin:0;
+            font-family:Arial;
+            background:#f4f6f9;
+        }
+
+        .header{
+            background:#020a14;
+            color:white;
+            padding:20px;
+            text-align:center;
+        }
+
+        .add-btn,
+        .login-btn,
+        .signup-btn{
+        padding:12px 22px;
+        border-radius:30px;
+        text-decoration:none;
+        font-weight:bold;
+        margin:8px;
+        display:inline-block;
+        }
+
+        .add-btn{
+        background:white;
+        color:#0d6efd;
+        }
+
+        .login-btn{
+        background:#ffc107;
+        color:black;
+        }
+
+        .signup-btn{
+        background:#198754;
+        color:white;
+        }
+
+        .card{
+            background:white;
+            width:60%;
+            margin:25px auto;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        img{
+            border-radius:8px;
+        }
+
+        .claim{
+            background:#198754;
+            color:white;
+            padding:8px 14px;
+            text-decoration:none;
+            border-radius:5px;
+        }
+
+        .edit{
+background:#0d6efd;
+color:white;
+padding:8px 14px;
+text-decoration:none;
+border-radius:5px;
+margin-left:6px;
+}
+
+.delete{
+background:#dc3545;
+color:white;
+padding:8px 14px;
+text-decoration:none;
+border-radius:5px;
+margin-left:6px;
+}
+
+        .claimed{
+            color:red;
+        }
+
+        .site-footer {
+    background-color: #1f2937; /* Clean, dark background */
+    color: #ffffff;            /* White text */
+    text-align: center;
+    padding: 20px 10px;
+    margin-top: 40px;          /* Pushes it away from the content above */
+    width: 100%;
+}
+
+.footer-content .college-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.footer-content .copyright {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+        .login-btn, .signup-btn{
+            display:inline-block;
+            margin-left:10px;
+            padding:10px 18px;
+            text-decoration:none;
+            border-radius:6px;
+        }
+
+        .login-btn{
+            background:#ffffff;
+            color:#0d6efd;
+        }
+
+        .signup-btn{
+            background:#198754;
+            color:white;
+        }
+
+/* Styling for the empty state container */
+.no-items-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 40px 20px;
+    text-align: center;
+    background-color: #f9fafb;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Text styling for the message */
+.no-items-text {
+    font-size: 1.25rem;
+    color: #64748b;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Text styling for the message */
+.search-container{
+    width:min(90%,900px);
+    margin:25px auto;
+    padding:22px;
+    background:#ffffff;
+    border-radius:18px;
+    box-shadow:0 4px 6px rgba(0,0,0,.04),0 10px 25px rgba(0,0,0,.06);
+    border:1px solid #f1f5f9;
+}
+
+.search-form{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.search-form input{
+    flex:1 1 250px;
+    padding:14px 18px;
+    border-radius:12px;
+    border:1px solid #e2e8f0;
+    background:#f8fafc;
+    transition:.25s;
+}
+
+.search-form input:focus{
+    outline:none;
+    background:white;
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,.12);
+}
+
+.search-btn{
+    padding:14px 24px;
+    border:none;
+    border-radius:12px;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    box-shadow:0 6px 18px rgba(37,99,235,.25);
+    transition:.25s;
+}
+
+.search-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 28px rgba(37,99,235,.35);
+}
+
+.clear-btn{
+    padding:14px 24px;
+    border-radius:12px;
+    text-decoration:none;
+    background:#f8fafc;
+    color:#475569;
+    border:1px solid #e2e8f0;
+    transition:.25s;
+}
+
+.clear-btn:hover{
+    transform:translateY(-3px);
+    background:white;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+@media(max-width:768px){
+
+.search-container{
+    width:92%;
+    padding:18px;
+}
+
+.search-form{
+    flex-direction:column;
+}
+
+.search-form input,
+.search-btn,
+.clear-btn{
+    width:100%;
+    box-sizing:border-box;
+}
+
+}
+
+.logout-btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    background: #dc3545;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.logout-btn:hover {
+    background: #bb2d3b;
+}
+    </style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <h1>UniFind</h1>
+    <p>A University-Based Lost & Found Management System</p>
+    <div>
+        <a class="add-btn" href="/add">+ Add Item</a>
+        {% if user.is_authenticated %}
+
+        <a class="login-btn" href="{% url 'notifications' %}">
+            Notifications
+        </a>
+
+        <a class="login-btn" href="{% url 'student_dashboard' %}">
+            Dashboard
+        </a>
+
+        <form
+            method="post"
+            action="{% url 'logout' %}"
+            style="display:inline;"
+        >
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+        </form>
+
+        {% else %}
+
+        <a class="login-btn" href="/login">
+            Login
+        </a>
+
+        <a class="signup-btn" href="/signup">
+            Sign Up
+        </a>
+
+        {% endif %}
+    </div>
+</div>
+
+{% if messages %}
+<div class="card">
+{% for message in messages %}
+<p class="{{ message.tags }}">{{ message }}</p>
+{% endfor %}
+</div>
+{% endif %}
+
+<div class="search-container">
+
+<form method="GET" class="search-form">
+
+    <input
+    name="title"
+    placeholder=" Search by Title"
+    value="{{title}}">
+
+    <input
+    name="location"
+    placeholder=" Search by Location"
+    value="{{location}}">
+
+    <!-- The new styled Filter Dropdown fits right here -->
+    <select id="statusFilter" style="
+    padding: 0 16px; 
+    border-radius: 8px; 
+    border: 1px solid #ccc; 
+    background-color: #ffffff;
+    color: #333;
+    font-size: 14px; 
+    font-weight: 500;
+    outline: none; 
+    cursor: pointer;
+    height: 44px;
+    box-sizing: border-box;
+">
+    <option value="all">🔍  All Items</option>
+    <option value="lost">🛑 Lost Items</option>
+    <option value="found">✅ Found Items</option>
+</select>
+
+    <button class="search-btn">
+    Search
+    </button>
+
+    <a href="/" class="clear-btn">
+    Clear
+    </a>
+
+</form>
+</div>
+
+
+
+<!-- STEP 2: Your loop begins here -->
+{% for item in items %}
+<!-- We added data-status="{{ item.status|lower }}" to this line so JavaScript can read if it is lost or found -->
+<div class="card" data-status="{{ item.status|lower }}">
+
+    <img src="{{item.image.url}}" width="220">
+
+    <h2>{{item.title}}</h2>
+
+    <p>{{item.description}}</p>
+
+    <p><strong>Location:</strong> {{item.location}}</p>
+
+    {% if item.claimed %}
+    <h3 class="claimed">CLAIMED</h3>
+    {% else %}
+    <p>Claimed By: {{item.claimed_by.username}}</p>
+    <a
+        class="claim"
+        href="/claim/{{item.id}}"
+        onclick="return confirm('Are you sure you want to claim this item?');"
+    >
+        Claim Item
+    </a>
+    {% endif %}
+
+    {% if item.owner == user %}
+    <a class="edit" href="/edit/{{item.id}}/">Edit</a>
+    <a class="delete" href="/delete/{{item.id}}/">Delete</a>
+    {% endif %}
+
+</div>
+
+{% empty %}
+
+<div class="no-items-container">
+    <p class="no-items-text">No lost/found items available</p>
+</div>
+
+{% endfor %}
+
+
+<!-- STEP 3: Put this magic JavaScript script at the very bottom of your file -->
+<script>
+    // This watches your dropdown menu. When you change the option, it runs this code:
+    document.getElementById('statusFilter').addEventListener('change', function() {
+        const selectedFilter = this.value; // This will be 'all', 'lost', or 'found'
+        const cards = document.querySelectorAll('.card'); // This grabs all your items
+
+        cards.forEach(card => {
+            const cardStatus = card.getAttribute('data-status'); // Looks at the item's status
+
+            // If you choose 'All', or if the item matches your choice, show it. Otherwise, hide it!
+            if (selectedFilter === 'all' || cardStatus === selectedFilter) {
+                card.style.display = ''; // Show item
+            } else {
+                card.style.display = 'none'; // Hide item
+            }
+        });
+    });
+</script>
+
+<!-- Footer Section -->
+<footer class="site-footer">
+    <div class="footer-content">
+        <p class="college-name">UniFind: A University-Based Lost & Found Management System</p>
+        <p class="copyright">&copy; 2026 UniFind. All Rights Reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>
+
