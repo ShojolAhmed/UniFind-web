@@ -27,33 +27,6 @@ UniFind is a centralized, university-based Lost and Found web application design
 
 ---
 
-## Project Structure
-
-```text
-UniFind/
-├── manage.py
-├── requirements.txt
-├── README.md
-├── .gitignore
-├── lost_and_found/
-│   ├── settings.py
-│   ├── urls.py
-│   ├── asgi.py
-│   └── wsgi.py
-├── items/
-│   ├── migrations/
-│   ├── templates/
-│   ├── models.py
-│   ├── views.py
-│   ├── forms.py
-│   ├── urls.py
-│   └── admin.py
-├── static/
-└── media/
-```
-
----
-
 ## Requirements
 
 - **Python:** 3.10 or newer
