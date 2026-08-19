@@ -13,12 +13,23 @@ ENV/
 *.log
 db.sqlite3
 db.sqlite3-journal
+staticfiles/
 
 # User uploaded media
 media/
 
 # Environment variables
 .env
+.env.*
+!.env.example
+
+# Node / frontend
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.local
+frontend/.vercel
 
 # IDE
 .vscode/

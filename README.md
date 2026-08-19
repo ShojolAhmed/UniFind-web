@@ -1,178 +1,208 @@
 # UniFind
 
-UniFind is a centralized, university-based Lost and Found web application designed to help students report, discover, and claim lost or found items across their campus. It provides a simple and structured platform to streamline item recovery, manage claims, and notify users internally.
+> A centralized, university-based Lost &amp; Found platform for reporting, discovering, and claiming items across campus.
 
----
+![Django](https://img.shields.io/badge/Django-6.1-092E20?logo=django&logoColor=white)
+![DRF](https://img.shields.io/badge/DRF-3.18-A30000)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+UniFind is a decoupled web application: a **Django REST Framework API** and a
+**React (Vite) single-page app** that communicate over JSON with JWT
+authentication. The two halves can be developed, scaled, and deployed
+independently.
+
+## Table of Contents
+
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+- [Configuration](#configuration)
+- [API Reference](#api-reference)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
 
-- **User Authentication:** Account registration, login, and logout functionality.
-- **Student Dashboard:** Central hub to manage personal item posts, view pending claims, and track claimed items.
-- **Reporting System:** Report lost or found items with details such as title, description, location, item type, contact information, and image uploads.
-- **Browse & Search:** Search available items by title or location, and filter listings by status (Lost / Found).
-- **Claim Management:**
-  - Submit claims for lost or found items.
-  - Item owners receive internal notifications upon claim submission.
-  - Owners can review, accept, or reject pending claims.
-- **Post Management:** Edit or delete personal item posts.
-- **Admin Panel:** Built-in Django administration interface for managing application data.
+- **JWT authentication** — register, log in, and stay signed in with automatic
+  access-token refresh.
+- **Item reporting** — post lost or found items with a title, type, description,
+  location, contact, and image.
+- **Browse, search & filter** — search by title or location and filter by
+  Lost / Found status.
+- **Claim workflow** — submit a claim on an item; the owner is notified and can
+  approve or reject it. Approving a claim marks the item as claimed and
+  automatically rejects competing claims.
+- **In-app notifications** — owners and claimants are notified of claim activity,
+  with an unread badge.
+- **Student dashboard** — track your posts, pending claims, and claimed items.
+- **Admin panel** — manage users, items, claims, and notifications via Django admin.
 
----
+## Tech Stack
 
-## Technology Stack
+| Layer | Technologies |
+|---|---|
+| **Backend** | Python, Django 6.1, Django REST Framework, SimpleJWT, django-cors-headers |
+| **Database** | SQLite (development), PostgreSQL (production) |
+| **Media** | Local filesystem (development), Cloudinary (production) |
+| **Frontend** | React 19, Vite, React Router, Axios |
+| **Serving** | Gunicorn, WhiteNoise |
 
-- **Backend:** Python, Django 4.2, SQLite
-- **Frontend:** HTML, CSS, JavaScript, Django Templates
-- **Additional:** WhiteNoise (static file serving), Pillow (image processing)
+## Architecture
 
----
-
-## Requirements
-
-- **Python:** 3.10 or newer
-- **Package Manager:** `pip`
-- **Version Control:** Git
-
----
-
-## Installation
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/YOUR_USERNAME/UniFind.git
-cd UniFind
+```text
+UniFind-web/
+├── backend/                # Django + Django REST Framework API (JSON only)
+│   ├── lost_and_found/     # Project config (settings, urls, wsgi/asgi)
+│   ├── items/              # App: models, serializers, api views, permissions, admin, tests
+│   ├── manage.py
+│   ├── requirements.txt
+│   ├── Procfile
+│   ├── .python-version
+│   └── .env.example
+├── frontend/               # React 19 + Vite SPA
+│   ├── src/
+│   │   ├── api/            # Axios client with JWT + auto-refresh
+│   │   ├── context/        # Auth + Toast providers
+│   │   ├── components/     # Layout, ItemCard, ProtectedRoute
+│   │   └── pages/          # Home, Login, Signup, Dashboard, Add, Edit, Notifications
+│   ├── vercel.json
+│   └── .env.example
+├── render.yaml             # Render Blueprint (API web service + Postgres)
+├── DEPLOYMENT.md           # Production deployment guide
+└── CONTRIBUTING.md         # Contribution guidelines
 ```
 
-### 2. Create and Activate a Virtual Environment
+The frontend communicates with the backend exclusively over HTTP/JSON. The
+backend renders HTML only for the Django admin and the DRF browsable API.
 
-- **Windows:**
-  ```cmd
-  python -m venv venv
-  venv\Scripts\activate
-  ```
+## Getting Started
 
-- **Linux / macOS:**
-  ```bash
-  python3 -m venv venv
-  source venv/bin/activate
-  ```
+### Prerequisites
 
-### 3. Install Dependencies
+- **Python** 3.12+
+- **Node.js** 20+
+- **Git**
+
+### Backend
+
 ```bash
+cd backend
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+# macOS / Linux
+source venv/bin/activate
+
 pip install -r requirements.txt
-```
 
----
+# Create a local env file (defaults to SQLite + DEBUG=True)
+cp .env.example .env
 
-## Database Setup
-
-Run the migrations to set up the SQLite database schema:
-
-```bash
 python manage.py migrate
-```
-
----
-
-## Admin Panel Setup
-
-Create a superuser account to access the Django admin panel:
-
-```bash
-python manage.py createsuperuser
-```
-
-Once created, the admin panel can be accessed at `http://127.0.0.1:8000/admin/`.
-
----
-
-## Running the Application
-
-Start the Django development server:
-
-```bash
+python manage.py createsuperuser   # optional, for the admin panel
 python manage.py runserver
 ```
 
-Open your browser and navigate to:
-`http://127.0.0.1:8000/`
+The API is served at `http://127.0.0.1:8000/`:
 
----
+- `http://127.0.0.1:8000/api/` — browsable API root
+- `http://127.0.0.1:8000/api/health/` — health check
+- `http://127.0.0.1:8000/admin/` — Django admin
 
-## Application Workflow
+### Frontend
 
-1. **User Registration & Login:** Students register for an account and log in.
-2. **Posting Items:** Users report a lost or found item by specifying details (title, description, location, type, contact info, and image).
-3. **Browsing & Discovery:** Users browse, search, and filter listed items across campus.
-4. **Submitting Claims:** A user submits a claim for an item they recognize or own.
-5. **Notification:** The item owner receives an internal notification regarding the claim request.
-6. **Resolution:** The owner reviews the claim details and accepts or rejects it.
-7. **Dashboard Tracking:** Users track and manage their posts, active/pending claims, and resolved items via their dashboard.
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
----
+The app runs at `http://localhost:5173/` and, by default, talks to the local API
+at `http://127.0.0.1:8000/api`.
 
-## Admin Panel
+## Configuration
 
-The project leverages Django's built-in administration framework to manage application data, user permissions, and posts. Administrators can perform complete CRUD operations on models at `http://127.0.0.1:8000/admin/`.
+Both apps are configured through environment variables; nothing sensitive is
+committed. Copy the provided examples and adjust as needed:
 
----
+- Backend: [`backend/.env.example`](backend/.env.example)
+- Frontend: [`frontend/.env.example`](frontend/.env.example)
 
-## Future Improvements
+A minimal backend `.env` for local development:
 
-- PostgreSQL support for database scalability
-- Enhanced, responsive UI/UX design
-- Advanced item filtering and category-based categorization
-- Improved claim verification mechanisms
-- Enhanced real-time notification system
-- Production deployment setup
-- REST API integration and a modern React-based frontend
-- Advanced administrative permissions and reporting tools
+```env
+DEBUG=True
+SECRET_KEY=dev-local-only-secret-key
+CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+```
 
----
+A full description of every variable is in the
+[Environment Variable Reference](DEPLOYMENT.md#environment-variable-reference).
 
-## Changelog
+## API Reference
 
-All notable changes to this project will be documented in this section.
+All endpoints are prefixed with `/api/`. List endpoints are paginated and return
+`{ count, next, previous, results }`.
 
-### [2.1.1] - Bug Fixes
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| `POST` | `/auth/register/` | – | Create an account; returns JWT tokens + user |
+| `POST` | `/auth/token/` | – | Log in; returns `access` / `refresh` + user |
+| `POST` | `/auth/token/refresh/` | – | Exchange a refresh token for a new access token |
+| `GET` | `/auth/me/` | ✓ | Current user profile |
+| `GET` | `/items/` | – | List / search items (`?title=`, `?location=`, `?item_type=`, `?owner=me`, `?claimed_by=me`) |
+| `POST` | `/items/` | ✓ | Create an item (multipart, with image) |
+| `GET` | `/items/{id}/` | – | Item detail |
+| `PATCH` / `PUT` | `/items/{id}/` | owner | Update an item |
+| `DELETE` | `/items/{id}/` | owner | Delete an item |
+| `POST` | `/items/{id}/claim/` | ✓ | Submit a claim |
+| `GET` | `/claims/` | ✓ | My submitted claims (`?status=pending`) |
+| `POST` | `/claims/{id}/approve/` | item owner | Approve a claim (auto-rejects competing claims) |
+| `POST` | `/claims/{id}/reject/` | item owner | Reject a claim |
+| `GET` | `/notifications/` | ✓ | My notifications |
+| `POST` | `/notifications/{id}/read/` | ✓ | Mark one notification as read |
+| `POST` | `/notifications/read-all/` | ✓ | Mark all as read |
+| `GET` | `/notifications/unread-count/` | ✓ | Unread notification count |
 
-#### Fixed
-- Fixed an issue where item status was not displaying on item cards.
-- Resolved a bug where filtering by lost or found status was not working correctly.
+## Testing
 
-### [2.1.0] - Patch & Navigation Update
+```bash
+cd backend
+python manage.py test
+```
 
-#### Added
-- Added responsive design support across different screen sizes.
-- Introduced an updated, better navbar and sidebar for improved navigation.
+The suite covers authentication, item CRUD with owner-only permissions, the
+claim/approve/reject workflow, and notifications.
 
-### [2.0.0] - UI Overhaul
+To verify a production frontend build:
 
-#### Changed
-- Completely redesigned the entire user interface with a modern look and feel.
+```bash
+cd frontend
+npm run build
+```
 
-### [1.0.0] - Initial Release
+## Deployment
 
-#### Added
-- **Authentication System:** User registration, login, and logout functionality.
-- **Student Dashboard:** Centralized dashboard to view personal posts, active claims, and claim status.
-- **Item Reporting:** Ability to post lost or found items with title, description, campus location, item type, contact details, and image attachment.
-- **Search & Filter:** Keyword search by item title and location, with filtering options for lost vs. found status.
-- **Claim System:** Interactive workflow allowing users to submit claims on posted items.
-- **Internal Notifications:** Automated internal system alerts notifying owners when a claim is placed on their item.
-- **Claim Management:** Post owners can review pending claims and choose to accept or reject them.
-- **Post Management:** Full CRUD capability for users to update or delete their listed items.
-- **Admin Interface:** Integrated Django admin panel (`/admin/`) for overall database and user management.
-- **Static & Media Asset Handling:** Configured WhiteNoise for static file serving and Pillow for media file management.
+UniFind is designed to run on a free-tier stack: **Render** (API + PostgreSQL),
+**Cloudinary** (media), and **Vercel** (frontend). See
+**[DEPLOYMENT.md](DEPLOYMENT.md)** for step-by-step instructions,
+an environment-variable reference, and troubleshooting.
 
----
+## Contributing
 
-## Acknowledgements
+Contributions are welcome. Please read
+**[CONTRIBUTING.md](CONTRIBUTING.md)** for the development workflow, coding
+standards, and pull-request process.
 
-UniFind was developed based on the open-source project
-"CEC Lost & Found" by M Aswathy.
+## License
 
-Original repository:
-https://github.com/AswathyyM/lost_and_found_portal
-
-The original project is licensed under the MIT License.
+Released under the [MIT License](LICENSE). Copyright (c) 2026 Shojol.
