@@ -15,7 +15,7 @@ services:
     runtime: python
     plan: free
     rootDir: backend
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py ensure_superuser"
     startCommand: "gunicorn lost_and_found.wsgi:application"
     healthCheckPath: /api/health/
     envVars:
@@ -44,4 +44,12 @@ services:
         sync: false
       # Cloudinary media storage: cloudinary://API_KEY:API_SECRET@CLOUD_NAME
       - key: CLOUDINARY_URL
+        sync: false
+      # Initial admin account, created on deploy by `manage.py ensure_superuser`
+      # (idempotent). Set these in the dashboard; they are never committed.
+      - key: DJANGO_SUPERUSER_USERNAME
+        sync: false
+      - key: DJANGO_SUPERUSER_EMAIL
+        sync: false
+      - key: DJANGO_SUPERUSER_PASSWORD
         sync: false

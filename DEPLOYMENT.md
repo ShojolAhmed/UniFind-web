@@ -71,10 +71,30 @@ together.
    - `CSRF_TRUSTED_ORIGINS` — your backend origin, e.g.
      `https://unifind-api.onrender.com`
    - `ALLOWED_HOSTS` — optional; the Render hostname is added automatically
-4. After the first successful deploy, create an admin user from the service
-   **Shell**:
-   ```bash
+4. **Create the initial admin account.** Render's free tier has no Shell or
+   Jobs, so the build step runs `python manage.py ensure_superuser`, which
+   creates a superuser from environment variables (idempotent — safe on every
+   deploy). In the **Environment** tab, set:
+   - `DJANGO_SUPERUSER_USERNAME`
+   - `DJANGO_SUPERUSER_EMAIL`
+   - `DJANGO_SUPERUSER_PASSWORD`
+
+   Then redeploy (**Manual Deploy → Deploy latest commit**). Look for
+   `ensure_superuser: created superuser "<name>"` in the build logs. For
+   security you can remove `DJANGO_SUPERUSER_PASSWORD` afterwards; the account
+   already exists and won't be recreated.
+
+   **Alternative (no redeploy):** create the account from your machine against
+   the database's **External Database URL** (Render → *unifind-db* → *Connect* →
+   *External Database URL*):
+   ```powershell
+   # PowerShell, from the backend/ directory with the venv active
+   $env:DATABASE_URL = "<external-database-url>"; $env:DB_SSL_REQUIRE = "True"
    python manage.py createsuperuser
+   ```
+   ```bash
+   # bash/zsh
+   DATABASE_URL="<external-database-url>" DB_SSL_REQUIRE=True python manage.py createsuperuser
    ```
 5. Verify the API is live: `https://<your-service>.onrender.com/api/health/`
    should return `{"status": "ok"}`.
@@ -126,6 +146,9 @@ development). See [`backend/.env.example`](backend/.env.example).
 | `CORS_ALLOWED_ORIGIN_REGEXES` | backend | – | Regex origins (e.g. preview URLs). |
 | `SECURE_HSTS_SECONDS` | backend | – | HSTS max-age. Set on a real HTTPS domain (`render.yaml` sets 30 days). |
 | `SECURE_SSL_REDIRECT` | backend | – | Redirect HTTP→HTTPS in production (default on when `DEBUG=False`). |
+| `DJANGO_SUPERUSER_USERNAME` | backend | – | Admin username created by `ensure_superuser` on deploy. |
+| `DJANGO_SUPERUSER_EMAIL` | backend | – | Admin email for the bootstrapped superuser. |
+| `DJANGO_SUPERUSER_PASSWORD` | backend | – | Admin password for the bootstrapped superuser. |
 | `VITE_API_URL` | frontend | ✓ (prod) | Base API URL including `/api`. |
 
 ---
@@ -152,6 +175,17 @@ the backend's `CORS_ALLOWED_ORIGINS`, and redeploy the backend after changing it
 **Uploaded images don't persist after a redeploy.**
 `CLOUDINARY_URL` is not set, so uploads are written to Render's ephemeral disk.
 Set `CLOUDINARY_URL` and redeploy.
+
+**`POST /api/items/` returns `500` when uploading an item.**
+The image upload to Cloudinary is failing — usually a wrong or malformed
+`CLOUDINARY_URL`. It must be exactly `cloudinary://API_KEY:API_SECRET@CLOUD_NAME`
+(the "API Environment variable" value from the Cloudinary dashboard), with no
+surrounding quotes or the `CLOUDINARY_URL=` prefix included in the value. The
+full traceback is written to the Render logs (logging is always enabled).
+
+**Can't create a superuser — the free plan has no Shell.**
+Use the environment-variable bootstrap or an external DB connection described in
+[step 4](#2-backend-on-render).
 
 **`400 Bad Request` / `DisallowedHost`.**
 Add the host to `ALLOWED_HOSTS`. The Render hostname is added automatically, so
